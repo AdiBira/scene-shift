@@ -2,10 +2,16 @@
 
 Scene Shift is a frontend prototype for reviewing controlled visual variations of real robot footage. It starts with one 12-second dual-arm manipulation clip, shows Reactor X2 generations beside their source, and separates automated visual review from human judgment.
 
+![Scene Shift prototype comparison view](public/screenshot.png)
+
+*Prototype comparison view showing the real source beside controlled visual variations.*
+
 ## What the demo shows
 
 - One source clip grouped with multiple generated outputs
 - Arm appearance, background wall, and table surface variations
+- Dedicated comparison pages with the original and generated clips side by side
+- Shared play, pause, and seek controls for visual comparison
 - Precomputed VLM verdicts labeled `PLAUSIBLE` or `DISCARD` where review is complete
 - Human `ACCEPTED` or `DISCARD` decisions that can override the VLM review
 - Human decisions and comments stored in the browser
