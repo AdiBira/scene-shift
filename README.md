@@ -7,19 +7,17 @@ Scene Shift is a frontend prototype for reviewing controlled visual variations o
 - One source clip grouped with multiple generated outputs
 - Arm appearance, background wall, and table surface variations
 - Precomputed VLM verdicts labeled `PLAUSIBLE` or `DISCARD` where review is complete
-- Separate human verdicts, overrides, and comments stored in the browser
-- A 2D trajectory review preview for comparing generated motion with the source
+- Human `ACCEPTED` or `DISCARD` decisions that can override the VLM review
+- Human decisions and comments stored in the browser
 - An optional in-app Reactor X2 generation flow
-
-The trajectory review is a product preview, not a live trajectory model. Existing results use precomputed review data. Newly generated results remain `PENDING` because no trajectory backend is included.
 
 ## Evidence boundaries
 
-`PLAUSIBLE` means visually plausible relative to the source and requested variation. It does not establish physics correctness, telemetry alignment, executable robot actions, or training readiness.
+All generated results are RGB video candidates. `PLAUSIBLE` and `ACCEPTED` mean visually plausible relative to the source and requested variation. They do not establish physics correctness, telemetry alignment, executable robot actions, or training readiness.
 
-This public repository contains the demo frontend, browser-ready showcase media, precomputed review data, and a minimal server-side token route for optional live generation. It excludes API credentials, private experiment archives, raw generations, internal prompts, and any trajectory backend.
+This public repository contains the demo frontend, browser-ready showcase media, precomputed visual review data, and a minimal server-side token route for optional live generation. It excludes API credentials, private experiment archives, raw generation archives, internal prompts, and robot-data validation backends.
 
-## Included review set
+## Included review set and initial decisions
 
 - Source: `original.mp4`
 - Visual keeps: blue safety-panel walls and brushed-steel table

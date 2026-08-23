@@ -1,17 +1,20 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { GeneratedVariation, LiveGenerator } from './live-generator';
 import { vlmReviews } from './vlm-reviews';
 
+type HumanVerdict = 'plausible' | 'discard';
+type ReviewStatus = HumanVerdict | 'pending';
+
 type HumanReview = {
-  verdict: 'plausible' | 'discard' | null;
+  verdict: HumanVerdict | null;
   comment: string;
 };
 
 type RecordedReview = {
   source: string;
-  status: 'plausible' | 'discard' | 'pending';
+  status: ReviewStatus;
   summary: string;
   qualification?: string;
 };
@@ -167,53 +170,24 @@ const tableWorlds = [
   },
 ];
 
-function RecordedReviewPanel({ review }: { review: RecordedReview }) {
-  const label = review.status === 'plausible' ? 'VISUAL KEEP' : review.status === 'discard' ? 'DISCARD' : 'PENDING';
+function RecordedReviewPanel({ review, verdict }: { review: RecordedReview; verdict?: HumanVerdict }) {
+  const status = verdict ?? review.status;
+  const label = status === 'plausible' ? 'ACCEPTED' : status === 'discard' ? 'DISCARD' : 'PENDING';
 
   return (
-    <section className={`recorded-review recorded-${review.status}`}>
-      <header><span>{review.source}</span><strong>{label}</strong></header>
-      <p>{review.summary}</p>
-      {review.qualification && <small>{review.qualification}</small>}
+    <section className={`recorded-review recorded-${status}`}>
+      <header><span>{verdict ? 'Final human verdict' : review.source}</span><strong>{label}</strong></header>
+      {!verdict && <p>{review.summary}</p>}
+      {!verdict && review.qualification && <small>{review.qualification}</small>}
     </section>
   );
 }
 
-function TrajectoryReviewPanel({ worldId }: { worldId: string }) {
-  if (worldId.startsWith('live-')) {
-    return (
-      <section className="trajectory-review-preview trajectory-review-pending">
-        <header><span>2D TRAJECTORY REVIEW</span><strong>PENDING</strong></header>
-        <div>
-          <p><span>Original comparison</span><b className="check-unknown">QUEUED</b></p>
-          <small>The captured output must be aligned with its experiment source before the automatic gate can run.</small>
-          <p><span>Disqualify threshold</span><b className="check-unknown">2% FRAME DIAGONAL</b></p>
-          <p><span>Frame-order reset</span><b className="check-unknown">NOT CHECKED</b></p>
-        </div>
-        <footer>No VLM is required. This gate compares image-space trajectories against the original experiment video.</footer>
-      </section>
-    );
-  }
-
-  const motionFailure = worldId === 'clean-lab-b' || worldId === 'navy-esd-table-b';
-  const objectFailure = worldId === 'navy-esd-table-b' || worldId === 'walnut-table';
-
-  return (
-    <section className="trajectory-review-preview">
-      <header><span>PRECOMPUTED 2D TRAJECTORY REVIEW</span><strong>BLOCKED</strong></header>
-      <div>
-        <p><span>Parent-run continuity</span><b>FAIL</b></p>
-        <small>The 12-second raw output contains a detected source-order reset.</small>
-        <p><span>Deviation threshold</span><b className="check-unknown">2% FRAME DIAGONAL</b></p>
-        <p><span>End-effector motion</span><b className={motionFailure ? 'check-fail' : 'check-unknown'}>{motionFailure ? 'FAIL' : 'NOT MEASURED'}</b></p>
-        <p><span>Object state</span><b className={objectFailure ? 'check-fail' : 'check-unknown'}>{objectFailure ? 'FAIL' : 'NOT MEASURED'}</b></p>
-      </div>
-      <footer>Automatic data-use gate preview. Image-space evidence can reject visible inconsistency, but it cannot certify physics or an executable robot trajectory.</footer>
-    </section>
-  );
-}
-
-function VlmReview({ expanded = false, worldId }: { expanded?: boolean; worldId: string }) {
+function VlmReview({ expanded = false, onVerdict, worldId }: {
+  expanded?: boolean;
+  onVerdict: (worldId: string, verdict: HumanVerdict) => void;
+  worldId: string;
+}) {
   const review = vlmReviews[worldId];
   const storageKey = `scene-shift-human-review-${worldId}`;
   const [human, setHuman] = useState<HumanReview>({ verdict: null, comment: '' });
@@ -222,11 +196,15 @@ function VlmReview({ expanded = false, worldId }: { expanded?: boolean; worldId:
   useEffect(() => {
     const saved = localStorage.getItem(storageKey);
     const restore = window.setTimeout(() => {
-      if (saved) setHuman(JSON.parse(saved));
+      if (saved) {
+        const restored = JSON.parse(saved) as HumanReview;
+        setHuman(restored);
+        if (restored.verdict) onVerdict(worldId, restored.verdict);
+      }
       setLoaded(true);
     });
     return () => window.clearTimeout(restore);
-  }, [storageKey]);
+  }, [onVerdict, storageKey, worldId]);
 
   useEffect(() => {
     if (loaded) localStorage.setItem(storageKey, JSON.stringify(human));
@@ -237,6 +215,11 @@ function VlmReview({ expanded = false, worldId }: { expanded?: boolean; worldId:
   const agrees = human.verdict === review.verdict;
   const confidence = Math.round(review.confidence * 100);
 
+  function chooseVerdict(verdict: HumanVerdict) {
+    setHuman({ ...human, verdict });
+    onVerdict(worldId, verdict);
+  }
+
   return (
     <details className={`vlm-review vlm-${review.verdict}`} open={expanded || undefined}>
       <summary>
@@ -246,27 +229,26 @@ function VlmReview({ expanded = false, worldId }: { expanded?: boolean; worldId:
       </summary>
       <div className="vlm-review-body">
         <p>{review.summary}</p>
-        <ul>{review.reasons.map((reason) => <li key={reason}>{reason}</li>)}</ul>
         <div className="human-review">
           <div>
-            <span>Your human review</span>
+            <span>Final decision</span>
             {human.verdict && (
               <b className={agrees ? 'human-agree' : 'human-override'}>
-                {agrees ? 'Agrees with model' : 'Overrides model'}
+                {agrees ? (human.verdict === 'plausible' ? 'Accepted' : 'Discarded') : 'Overrides VLM'}
               </b>
             )}
           </div>
-          <div className="human-verdicts" role="group" aria-label="Your human review">
+          <div className="human-verdicts" role="group" aria-label="Final human decision">
             <button
               className={human.verdict === 'plausible' ? 'selected plausible' : ''}
-              onClick={() => setHuman({ ...human, verdict: 'plausible' })}
+              onClick={() => chooseVerdict('plausible')}
               type="button"
             >
-              Plausible
+              Accept
             </button>
             <button
               className={human.verdict === 'discard' ? 'selected discard' : ''}
-              onClick={() => setHuman({ ...human, verdict: 'discard' })}
+              onClick={() => chooseVerdict('discard')}
               type="button"
             >
               Discard
@@ -275,7 +257,7 @@ function VlmReview({ expanded = false, worldId }: { expanded?: boolean; worldId:
           <textarea
             aria-label="Review note"
             onChange={(event) => setHuman({ ...human, comment: event.target.value })}
-            placeholder="Optional human review note"
+            placeholder="Optional note"
             value={human.comment}
           />
         </div>
@@ -286,11 +268,20 @@ function VlmReview({ expanded = false, worldId }: { expanded?: boolean; worldId:
 
 export default function Home() {
   const [liveWorlds, setLiveWorlds] = useState<LiveWorld[]>([]);
+  const [humanVerdicts, setHumanVerdicts] = useState<Record<string, HumanVerdict>>({});
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showGenerator, setShowGenerator] = useState(false);
   const liveUrls = useRef<string[]>([]);
   const worlds = [...appearanceWorlds, ...backgroundWorlds, ...tableWorlds, ...liveWorlds];
   const selected = worlds.find((world) => world.id === selectedId);
+
+  const updateHumanVerdict = useCallback((worldId: string, verdict: HumanVerdict) => {
+    setHumanVerdicts((current) => ({ ...current, [worldId]: verdict }));
+  }, []);
+
+  function statusFor(world: { id: string; status: ReviewStatus }) {
+    return humanVerdicts[world.id] ?? world.status;
+  }
 
   function addGeneratedVariation({ output, prompt }: GeneratedVariation) {
     const url = URL.createObjectURL(output);
@@ -311,6 +302,20 @@ export default function Home() {
 
   useEffect(() => () => {
     liveUrls.current.forEach((url) => URL.revokeObjectURL(url));
+  }, []);
+
+  useEffect(() => {
+    const restore = window.setTimeout(() => {
+      const restored: Record<string, HumanVerdict> = {};
+      [...appearanceWorlds, ...backgroundWorlds, ...tableWorlds].forEach((world) => {
+        const saved = localStorage.getItem(`scene-shift-human-review-${world.id}`);
+        if (!saved) return;
+        const review = JSON.parse(saved) as HumanReview;
+        if (review.verdict) restored[world.id] = review.verdict;
+      });
+      setHumanVerdicts(restored);
+    });
+    return () => window.clearTimeout(restore);
   }, []);
 
   useEffect(() => {
@@ -381,10 +386,11 @@ export default function Home() {
             <small>CLICK A CLIP TO REVIEW</small>
           </header>
           <div className="showcase-color-grid">
-            {appearanceWorlds.map((world) => (
-              <button
-                aria-label={`${world.title}, ${world.status}`}
-                className={`showcase-tile showcase-card-button status-${world.status}`}
+            {appearanceWorlds.map((world) => {
+              const status = statusFor(world);
+              return <button
+                aria-label={`${world.title}, ${status === 'plausible' ? 'accepted' : status}`}
+                className={`showcase-tile showcase-card-button status-${status}`}
                 key={world.id}
                 onClick={() => setSelectedId(world.id)}
                 type="button"
@@ -402,8 +408,8 @@ export default function Home() {
                   />
                 </div>
                 <footer><strong>{world.title}</strong></footer>
-              </button>
-            ))}
+              </button>;
+            })}
           </div>
         </div>
       </section>
@@ -438,10 +444,11 @@ export default function Home() {
           <small>3-SECOND REVIEW CLIPS</small>
         </header>
         <div className="showcase-environment-grid columns-3">
-          {backgroundWorlds.map((world) => (
-            <button
-              aria-label={`${world.title}, ${world.status}`}
-              className={`showcase-tile showcase-card-button status-${world.status}`}
+          {backgroundWorlds.map((world) => {
+            const status = statusFor(world);
+            return <button
+              aria-label={`${world.title}, ${status === 'plausible' ? 'accepted' : status}`}
+              className={`showcase-tile showcase-card-button status-${status}`}
               key={world.id}
               onClick={() => setSelectedId(world.id)}
               type="button"
@@ -450,8 +457,8 @@ export default function Home() {
                 <video className="showcase-video" src={world.url} autoPlay muted loop playsInline preload="metadata" />
               </div>
               <footer><strong>{world.title}</strong></footer>
-            </button>
-          ))}
+            </button>;
+          })}
         </div>
       </section>
 
@@ -461,18 +468,19 @@ export default function Home() {
           <small>GREEN KEEPS / RED DISCARDS</small>
         </header>
         <div className="showcase-environment-grid columns-4">
-          {tableWorlds.map((world) => (
-            <button
-              aria-label={`${world.title}, ${world.status}`}
-              className={`showcase-tile showcase-card-button status-${world.status}`}
+          {tableWorlds.map((world) => {
+            const status = statusFor(world);
+            return <button
+              aria-label={`${world.title}, ${status === 'plausible' ? 'accepted' : status}`}
+              className={`showcase-tile showcase-card-button status-${status}`}
               key={world.id}
               onClick={() => setSelectedId(world.id)}
               type="button"
             >
               <div><video className="showcase-video" src={world.url} autoPlay muted loop playsInline preload="metadata" /></div>
               <footer><strong>{world.title}</strong></footer>
-            </button>
-          ))}
+            </button>;
+          })}
         </div>
       </section>
 
@@ -499,9 +507,10 @@ export default function Home() {
               playsInline
             />
             <div className="review-panel">
-              {'recordedReview' in selected && <RecordedReviewPanel review={selected.recordedReview} />}
-              <VlmReview expanded worldId={selected.id} />
-              <TrajectoryReviewPanel worldId={selected.id} />
+              {'recordedReview' in selected && (
+                <RecordedReviewPanel review={selected.recordedReview} verdict={humanVerdicts[selected.id]} />
+              )}
+              <VlmReview expanded onVerdict={updateHumanVerdict} worldId={selected.id} />
               <p className="review-boundary">
                 Visual judgment only. This does not certify physics, telemetry alignment, or training readiness.
               </p>
