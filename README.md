@@ -1,6 +1,6 @@
 # Scene Shift
 
-[Open the live demo](https://scene-shift-pink.vercel.app)
+[Open the live demo](https://scene-shift.vercel.app)
 
 Scene Shift is a frontend prototype for generating and reviewing controlled robot-video variations, from robot appearance and work surfaces to scenery, objects, and task changes. The goal is to explore whether plausible synthetic variants of real-world robot data can help scale model pretraining, with human review before any stronger use claim.
 
