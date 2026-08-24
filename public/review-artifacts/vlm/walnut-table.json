@@ -1,0 +1,205 @@
+{
+  "schema_version": 2,
+  "review_id": "walnut-table",
+  "model": "gpt-5.6-luna",
+  "created_at": "2026-08-23T23:11:29.798263+00:00",
+  "requested_variation": "Change the table surface to walnut.",
+  "source": {
+    "path": "prototype/public/media/showcase/original.mp4",
+    "sha256": "626462ab975c77d3aad818ac47aa4562372539454ce95c6f726a1ae8ab38c5aa"
+  },
+  "candidate": {
+    "path": "prototype/public/media/showcase/table-walnut-failure-3s.mp4",
+    "sha256": "b188baf64bbb1731c3cc96ab597c44a8b6b301be5990a4de8781c1a3d8b00d92"
+  },
+  "sample_times_s": [
+    0.0,
+    0.2682,
+    0.5364,
+    0.8045,
+    1.0727,
+    1.3409,
+    1.6091,
+    1.8773,
+    2.1455,
+    2.4136,
+    2.6818,
+    2.95
+  ],
+  "sheet_hashes": [
+    "8d4750760824a8bb1b45aecb0798442b27801a15c67e2aa2c375aab196871f24",
+    "f286a98043504bd77112d2c09defdb77279d98eef82ac2d40bed10e894b71d14",
+    "b859cc198821f091b8ecc7de07d491d59b68261dfd04cdbf8818e284f308daa5"
+  ],
+  "prompt": "You are a strict visual reviewer of a generated robot-manipulation video against its real source.\n\nThe attached images contain source and generated frames paired at identical timestamps. They are grouped into FULL FRAME, ROBOT + GRIPPERS, and BLOCKS + WORK SURFACE views. Read every panel in every view before assessing each dimension.\n\nRequested variation:\nChange the table surface to walnut.\n\nSuccess on the requested edit is necessary but not sufficient. Assess all nine dimensions independently:\n1. requested_variation: the requested visual change is visible and temporally consistent without unrelated scene changes.\n2. arm_opacity_geometry: both robot arms stay opaque, solid, correctly connected, and geometrically coherent.\n3. gripper_integrity: both end effectors remain present, rigid, recognizable, and attached to their arms.\n4. block_realism_count: blocks remain solid and distinct, without melting, multiplication, disappearance, or implausible shape changes.\n5. gripper_block_interaction: visible block motion remains spatially associated with a gripper; fail if a block visibly moves independently, passes through a gripper, or changes attachment implausibly.\n6. object_continuity: blocks do not jump, teleport, drift, duplicate, reset, or change identity between sampled moments.\n7. temporal_continuity: robot, object, and scene motion progress without visible discontinuities or resets.\n8. hallucinated_entities: no new blocks, robot parts, people, or unrelated objects appear.\n9. visible_task_preservation: the generated sequence continues to show the same broad manipulation event as the source.\n\nFor every dimension return pass, fail, or uncertain with timestamped visible evidence. Mark fail when any sampled frame visibly contains a critical defect, even if most of the video looks good. Mark uncertain only when the supplied views do not visibly resolve the question. Do not infer a defect merely because frames are sampled rather than continuous.\n\nUse only visible RGB evidence. Do not infer physics correctness, contact validity, telemetry alignment, executable actions, or training readiness.\n\nReturn one factual summary, the nine dimension assessments, and limitations. The application will deterministically map any fail to DISCARD, otherwise any uncertain to UNCERTAIN, otherwise PLAUSIBLE.\n\nDo not provide a confidence score. Do not use tools or inspect files. Review only the attached images and return the requested JSON.",
+  "prompt_sha256": "0fc430b0783b572fb9a05968605b0a7f7b2d0ce2fc2001cca5e6aaefdb5c984e",
+  "verdict": "discard",
+  "summary": "The walnut tabletop edit is visible and temporally stable, but the generated frames introduce extra or altered blocks relative to the source. Overall result: DISCARD.",
+  "observations": [
+    {
+      "time_s": 0.0,
+      "category": "requested_variation",
+      "finding": "The tabletop is visibly changed to walnut, but the generated frame also shows a different block grouping/count than the source."
+    },
+    {
+      "time_s": 2.95,
+      "category": "requested_variation",
+      "finding": "The walnut surface remains consistent, while the unrelated block differences persist."
+    },
+    {
+      "time_s": 0.0,
+      "category": "block_realism_count",
+      "finding": "Generated blocks are solid, but the visible yellow block cluster differs in count and appearance from the source blocks."
+    },
+    {
+      "time_s": 0.8,
+      "category": "block_realism_count",
+      "finding": "The generated sequence continues to show the altered/multiplied block grouping."
+    },
+    {
+      "time_s": 0.0,
+      "category": "gripper_block_interaction",
+      "finding": "The sampled frames do not clearly resolve a gripper grasping or moving a block."
+    },
+    {
+      "time_s": 2.95,
+      "category": "gripper_block_interaction",
+      "finding": "No definitive visible contact or block transfer is resolved in the supplied samples."
+    },
+    {
+      "time_s": 0.0,
+      "category": "hallucinated_entities",
+      "finding": "Additional or altered yellow blocks are visible in the generated frame compared with the source."
+    },
+    {
+      "time_s": 1.34,
+      "category": "hallucinated_entities",
+      "finding": "The extra/altered block grouping remains present."
+    }
+  ],
+  "dimensions": {
+    "requested_variation": {
+      "status": "fail",
+      "evidence": [
+        {
+          "time_s": 0.0,
+          "finding": "The tabletop is visibly changed to walnut, but the generated frame also shows a different block grouping/count than the source."
+        },
+        {
+          "time_s": 2.95,
+          "finding": "The walnut surface remains consistent, while the unrelated block differences persist."
+        }
+      ]
+    },
+    "arm_opacity_geometry": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0.0,
+          "finding": "Both robot arms are opaque, solid, connected, and geometrically coherent."
+        },
+        {
+          "time_s": 2.95,
+          "finding": "Both arms remain visually coherent without visible breaks or transparency."
+        }
+      ]
+    },
+    "gripper_integrity": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0.0,
+          "finding": "Both grippers are present, recognizable, rigid, and attached to their arms."
+        },
+        {
+          "time_s": 2.95,
+          "finding": "Both grippers remain intact and attached."
+        }
+      ]
+    },
+    "block_realism_count": {
+      "status": "fail",
+      "evidence": [
+        {
+          "time_s": 0.0,
+          "finding": "Generated blocks are solid, but the visible yellow block cluster differs in count and appearance from the source blocks."
+        },
+        {
+          "time_s": 0.8,
+          "finding": "The generated sequence continues to show the altered/multiplied block grouping."
+        }
+      ]
+    },
+    "gripper_block_interaction": {
+      "status": "uncertain",
+      "evidence": [
+        {
+          "time_s": 0.0,
+          "finding": "The sampled frames do not clearly resolve a gripper grasping or moving a block."
+        },
+        {
+          "time_s": 2.95,
+          "finding": "No definitive visible contact or block transfer is resolved in the supplied samples."
+        }
+      ]
+    },
+    "object_continuity": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0.0,
+          "finding": "The generated block grouping is spatially stable in the initial sampled frame."
+        },
+        {
+          "time_s": 2.95,
+          "finding": "The same generated block grouping remains visible without an obvious jump, reset, or teleport across sampled moments."
+        }
+      ]
+    },
+    "temporal_continuity": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0.0,
+          "finding": "Robot, blocks, and background appear coherent."
+        },
+        {
+          "time_s": 2.95,
+          "finding": "No visible temporal reset, discontinuity, or scene break appears across the sampled frames."
+        }
+      ]
+    },
+    "hallucinated_entities": {
+      "status": "fail",
+      "evidence": [
+        {
+          "time_s": 0.0,
+          "finding": "Additional or altered yellow blocks are visible in the generated frame compared with the source."
+        },
+        {
+          "time_s": 1.34,
+          "finding": "The extra/altered block grouping remains present."
+        }
+      ]
+    },
+    "visible_task_preservation": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0.0,
+          "finding": "The generated frame preserves the same broad robot-and-block tabletop manipulation setup."
+        },
+        {
+          "time_s": 2.95,
+          "finding": "The same robot, grippers, work surface, and manipulation scene remain visible."
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "Assessment is limited to the supplied sampled RGB frame comparisons.",
+    "The samples do not visibly resolve continuous-frame behavior or definitive gripper contact mechanics."
+  ],
+  "confidence": null,
+  "benchmark_agreement": "5/9"
+}

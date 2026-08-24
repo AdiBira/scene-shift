@@ -1,0 +1,8 @@
+{
+  "status": "weak_keep",
+  "reviewer": "human",
+  "reviewed_at": "2026-08-24",
+  "reason": "The table is visually acceptable but too similar to an existing table variant.",
+  "eligible_for_demo_positive": true,
+  "eligible_for_training_candidate": false
+}

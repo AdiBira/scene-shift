@@ -7,7 +7,6 @@ import {
   appearanceWorlds,
   backgroundWorlds,
   type HumanVerdict,
-  type RecordedReview,
   type ReviewStatus,
   type ReviewWorld,
   tableWorlds,
@@ -23,7 +22,6 @@ type LiveWorld = {
   title: string;
   url: string;
   status: 'pending';
-  recordedReview: RecordedReview;
 };
 
 function WorldTile({ status, world }: { status: ReviewStatus; world: ReviewWorld }) {
@@ -60,7 +58,7 @@ export default function Home() {
     return humanVerdicts[world.id] ?? world.status;
   }
 
-  function addGeneratedVariation({ output, prompt }: GeneratedVariation) {
+  function addGeneratedVariation({ output }: GeneratedVariation) {
     const url = URL.createObjectURL(output);
     liveUrls.current.push(url);
     setLiveWorlds((current) => [...current, {
@@ -68,12 +66,6 @@ export default function Home() {
       title: `Generated variation ${current.length + 1}`,
       url,
       status: 'pending',
-      recordedReview: {
-        source: 'Live Reactor capture',
-        status: 'pending',
-        summary: 'The output was captured and attached to Experiment 01. Visual review is pending.',
-        qualification: `Prompt: ${prompt}`,
-      },
     }]);
   }
 

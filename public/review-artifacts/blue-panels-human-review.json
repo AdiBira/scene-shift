@@ -1,0 +1,9 @@
+{
+  "status": "visual_keep",
+  "reviewer": "human",
+  "reviewed_at": "2026-08-24",
+  "reason": "The blue polycarbonate background is visually acceptable.",
+  "eligible_for_demo_positive": true,
+  "eligible_for_training_candidate": false,
+  "qualification": "The raw output has a detected source-order reset and is not trajectory-aligned."
+}

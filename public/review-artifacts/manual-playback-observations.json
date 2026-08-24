@@ -1,0 +1,12 @@
+{
+  "source": "Project owner final playback review",
+  "recorded_at": "2026-08-24",
+  "method": "Manual full-video playback",
+  "observations": [
+    {"id": "safety-orange", "status": "discard", "reason": "The extending right-arm shell becomes transparent during playback."},
+    {"id": "cobalt-blue", "status": "discard", "reason": "The extending right-arm shell becomes transparent or disappears during playback."},
+    {"id": "graphite-black", "status": "discard", "reason": "The extending right-arm shell becomes transparent or disappears during playback."},
+    {"id": "clean-lab-b", "status": "discard", "reason": "Block drift and table artifacts are visible during playback."},
+    {"id": "navy-esd-table-b", "status": "discard", "reason": "Motion and object-state drift are visible during playback."}
+  ]
+}

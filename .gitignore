@@ -5,3 +5,4 @@ dist
 .wrangler
 .env*
 .DS_Store
+__pycache__/

@@ -1,0 +1,182 @@
+{
+  "schema_version": 2,
+  "model": "gpt-5.6-luna",
+  "sampling": "48 paired timestamps for 12-second clips; 12 paired timestamps for 3-second clips; full-frame, robot/gripper, and block/work-surface views",
+  "prompt_template": "You are a strict visual reviewer of a generated robot-manipulation video against its real source.\n\nThe attached images contain source and generated frames paired at identical timestamps. They are grouped into FULL FRAME, ROBOT + GRIPPERS, and BLOCKS + WORK SURFACE views. Read every panel in every view before assessing each dimension.\n\nRequested variation:\n{variation}\n\nSuccess on the requested edit is necessary but not sufficient. Assess all nine dimensions independently:\n1. requested_variation: the requested visual change is visible and temporally consistent without unrelated scene changes.\n2. arm_opacity_geometry: both robot arms stay opaque, solid, correctly connected, and geometrically coherent.\n3. gripper_integrity: both end effectors remain present, rigid, recognizable, and attached to their arms.\n4. block_realism_count: blocks remain solid and distinct, without melting, multiplication, disappearance, or implausible shape changes.\n5. gripper_block_interaction: visible block motion remains spatially associated with a gripper; fail if a block visibly moves independently, passes through a gripper, or changes attachment implausibly.\n6. object_continuity: blocks do not jump, teleport, drift, duplicate, reset, or change identity between sampled moments.\n7. temporal_continuity: robot, object, and scene motion progress without visible discontinuities or resets.\n8. hallucinated_entities: no new blocks, robot parts, people, or unrelated objects appear.\n9. visible_task_preservation: the generated sequence continues to show the same broad manipulation event as the source.\n\nFor every dimension return pass, fail, or uncertain with timestamped visible evidence. Mark fail when any sampled frame visibly contains a critical defect, even if most of the video looks good. Mark uncertain only when the supplied views do not visibly resolve the question. Do not infer a defect merely because frames are sampled rather than continuous.\n\nUse only visible RGB evidence. Do not infer physics correctness, contact validity, telemetry alignment, executable actions, or training readiness.\n\nReturn one factual summary, the nine dimension assessments, and limitations. The application will deterministically map any fail to DISCARD, otherwise any uncertain to UNCERTAIN, otherwise PLAUSIBLE.\n\nDo not provide a confidence score. Do not use tools or inspect files. Review only the attached images and return the requested JSON.",
+  "output_schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "summary",
+      "dimensions",
+      "limitations"
+    ],
+    "properties": {
+      "summary": {
+        "type": "string"
+      },
+      "dimensions": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "requested_variation",
+          "arm_opacity_geometry",
+          "gripper_integrity",
+          "block_realism_count",
+          "gripper_block_interaction",
+          "object_continuity",
+          "temporal_continuity",
+          "hallucinated_entities",
+          "visible_task_preservation"
+        ],
+        "properties": {
+          "requested_variation": {
+            "$ref": "#/$defs/check"
+          },
+          "arm_opacity_geometry": {
+            "$ref": "#/$defs/check"
+          },
+          "gripper_integrity": {
+            "$ref": "#/$defs/check"
+          },
+          "block_realism_count": {
+            "$ref": "#/$defs/check"
+          },
+          "gripper_block_interaction": {
+            "$ref": "#/$defs/check"
+          },
+          "object_continuity": {
+            "$ref": "#/$defs/check"
+          },
+          "temporal_continuity": {
+            "$ref": "#/$defs/check"
+          },
+          "hallucinated_entities": {
+            "$ref": "#/$defs/check"
+          },
+          "visible_task_preservation": {
+            "$ref": "#/$defs/check"
+          }
+        }
+      },
+      "limitations": {
+        "type": "array",
+        "minItems": 1,
+        "maxItems": 4,
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "$defs": {
+      "check": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "status",
+          "evidence"
+        ],
+        "properties": {
+          "status": {
+            "enum": [
+              "pass",
+              "fail",
+              "uncertain"
+            ]
+          },
+          "evidence": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 3,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "time_s",
+                "finding"
+              ],
+              "properties": {
+                "time_s": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "finding": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "benchmark": {
+    "schema_version": 2,
+    "model": "gpt-5.6-luna",
+    "evaluated": 9,
+    "matches": 5,
+    "accuracy": 0.5555555555555556,
+    "acceptance_gate": {
+      "all_manual_discards_caught": false,
+      "at_least_7_of_9_agreement": false,
+      "at_least_one_manual_keep_retained": false
+    },
+    "rows": [
+      {
+        "id": "safety-orange",
+        "expected": "discard",
+        "actual": "discard",
+        "match": true
+      },
+      {
+        "id": "cobalt-blue",
+        "expected": "discard",
+        "actual": "discard",
+        "match": true
+      },
+      {
+        "id": "signal-yellow",
+        "expected": "discard",
+        "actual": "discard",
+        "match": true
+      },
+      {
+        "id": "graphite-black",
+        "expected": "discard",
+        "actual": "uncertain",
+        "match": false
+      },
+      {
+        "id": "blue-safety-panels",
+        "expected": "plausible",
+        "actual": "uncertain",
+        "match": false
+      },
+      {
+        "id": "clean-lab-b",
+        "expected": "discard",
+        "actual": "discard",
+        "match": true
+      },
+      {
+        "id": "brushed-steel-table",
+        "expected": "plausible",
+        "actual": "discard",
+        "match": false
+      },
+      {
+        "id": "navy-esd-table-b",
+        "expected": "discard",
+        "actual": "plausible",
+        "match": false
+      },
+      {
+        "id": "walnut-table",
+        "expected": "discard",
+        "actual": "discard",
+        "match": true
+      }
+    ],
+    "boundary": "Agreement with this small manually labeled showcase set is not a calibrated model confidence or general benchmark."
+  }
+}

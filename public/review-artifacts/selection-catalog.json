@@ -1,0 +1,16 @@
+{
+  "source": "Final selection catalog",
+  "recorded_at": "2026-08-24",
+  "items": [
+    {
+      "id": "orange-opacity-repair",
+      "review": "PROMISING_NEEDS_FINAL_HUMAN_PLAYBACK",
+      "note": "144 sampled frames show a solid right-arm shell; full raw remains source-order-reset flagged."
+    },
+    {
+      "id": "safety-mesh-walls",
+      "review": "REVIEW_REQUIRED",
+      "note": "Visibly distinct enclosure candidate; raw remains source-order-reset flagged."
+    }
+  ]
+}

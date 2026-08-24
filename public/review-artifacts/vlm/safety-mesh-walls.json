@@ -1,0 +1,205 @@
+{
+  "schema_version": 2,
+  "review_id": "safety-mesh-walls",
+  "model": "gpt-5.6-luna",
+  "created_at": "2026-08-23T23:05:56.014869+00:00",
+  "requested_variation": "Change the enclosure walls to dark safety mesh.",
+  "source": {
+    "path": "prototype/public/media/showcase/original.mp4",
+    "sha256": "626462ab975c77d3aad818ac47aa4562372539454ce95c6f726a1ae8ab38c5aa"
+  },
+  "candidate": {
+    "path": "prototype/public/media/showcase/walls-safety-mesh-3s.mp4",
+    "sha256": "b509709d03bcd0311b0d93881cf9217aae4c0fe67d4050acc9d739bdd25db2e9"
+  },
+  "sample_times_s": [
+    0.0,
+    0.2682,
+    0.5364,
+    0.8045,
+    1.0727,
+    1.3409,
+    1.6091,
+    1.8773,
+    2.1455,
+    2.4136,
+    2.6818,
+    2.95
+  ],
+  "sheet_hashes": [
+    "c5af6607efe877ddff4f15ab3a89b6ec7cff5d1a3a93d89e6e82b8526bf0b78c",
+    "570cc5c34be05bd50e883a48c6c9efef4824006afebb0f380c26835c65778613",
+    "794ea63843795667055307e9d7b1da7935323d18b42865f12ab94822aca1bf6b"
+  ],
+  "prompt": "You are a strict visual reviewer of a generated robot-manipulation video against its real source.\n\nThe attached images contain source and generated frames paired at identical timestamps. They are grouped into FULL FRAME, ROBOT + GRIPPERS, and BLOCKS + WORK SURFACE views. Read every panel in every view before assessing each dimension.\n\nRequested variation:\nChange the enclosure walls to dark safety mesh.\n\nSuccess on the requested edit is necessary but not sufficient. Assess all nine dimensions independently:\n1. requested_variation: the requested visual change is visible and temporally consistent without unrelated scene changes.\n2. arm_opacity_geometry: both robot arms stay opaque, solid, correctly connected, and geometrically coherent.\n3. gripper_integrity: both end effectors remain present, rigid, recognizable, and attached to their arms.\n4. block_realism_count: blocks remain solid and distinct, without melting, multiplication, disappearance, or implausible shape changes.\n5. gripper_block_interaction: visible block motion remains spatially associated with a gripper; fail if a block visibly moves independently, passes through a gripper, or changes attachment implausibly.\n6. object_continuity: blocks do not jump, teleport, drift, duplicate, reset, or change identity between sampled moments.\n7. temporal_continuity: robot, object, and scene motion progress without visible discontinuities or resets.\n8. hallucinated_entities: no new blocks, robot parts, people, or unrelated objects appear.\n9. visible_task_preservation: the generated sequence continues to show the same broad manipulation event as the source.\n\nFor every dimension return pass, fail, or uncertain with timestamped visible evidence. Mark fail when any sampled frame visibly contains a critical defect, even if most of the video looks good. Mark uncertain only when the supplied views do not visibly resolve the question. Do not infer a defect merely because frames are sampled rather than continuous.\n\nUse only visible RGB evidence. Do not infer physics correctness, contact validity, telemetry alignment, executable actions, or training readiness.\n\nReturn one factual summary, the nine dimension assessments, and limitations. The application will deterministically map any fail to DISCARD, otherwise any uncertain to UNCERTAIN, otherwise PLAUSIBLE.\n\nDo not provide a confidence score. Do not use tools or inspect files. Review only the attached images and return the requested JSON.",
+  "prompt_sha256": "25e503fb88602c1436bd8194ec2f74f4f03040ebe7ef4701a49c20f18bcd990e",
+  "verdict": "plausible",
+  "summary": "The generated sequence consistently changes the enclosure walls to dark safety mesh while preserving the visible two-arm robot manipulation scene. No sampled frame shows a critical visual defect.",
+  "observations": [
+    {
+      "time_s": 0,
+      "category": "overall",
+      "finding": "The generated sequence consistently changes the enclosure walls to dark safety mesh while preserving the visible two-arm robot manipulation scene. No sampled frame shows a critical visual defect."
+    }
+  ],
+  "dimensions": {
+    "requested_variation": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0,
+          "finding": "Generated enclosure walls visibly use dark safety mesh instead of the floral source walls."
+        },
+        {
+          "time_s": 1.34,
+          "finding": "Dark mesh remains visible across the enclosure walls with stable scene geometry."
+        },
+        {
+          "time_s": 2.95,
+          "finding": "The requested dark safety-mesh treatment persists in the final sampled frame."
+        }
+      ]
+    },
+    "arm_opacity_geometry": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0,
+          "finding": "Both robot arms are opaque, solid, and connected."
+        },
+        {
+          "time_s": 1.61,
+          "finding": "Both arms retain coherent geometry during the manipulation sequence."
+        },
+        {
+          "time_s": 2.95,
+          "finding": "Both arms remain visible and structurally connected."
+        }
+      ]
+    },
+    "gripper_integrity": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0,
+          "finding": "Both recognizable grippers are present and attached to their arms."
+        },
+        {
+          "time_s": 1.88,
+          "finding": "Both grippers remain rigid and recognizable."
+        },
+        {
+          "time_s": 2.95,
+          "finding": "Both end effectors remain attached and intact."
+        }
+      ]
+    },
+    "block_realism_count": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0,
+          "finding": "The visible colored blocks remain solid and distinct."
+        },
+        {
+          "time_s": 1.34,
+          "finding": "Blocks remain distinct without visible multiplication or melting."
+        },
+        {
+          "time_s": 2.95,
+          "finding": "The final sampled frame retains distinct block shapes and count."
+        }
+      ]
+    },
+    "gripper_block_interaction": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0.8,
+          "finding": "The right gripper is spatially positioned near the visible blocks."
+        },
+        {
+          "time_s": 1.61,
+          "finding": "The gripper and blocks remain spatially associated without visible penetration or independent block displacement."
+        },
+        {
+          "time_s": 2.68,
+          "finding": "No sampled interaction frame shows implausible attachment or detached block motion."
+        }
+      ]
+    },
+    "object_continuity": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0.27,
+          "finding": "Block arrangement remains consistent with the initial generated frame."
+        },
+        {
+          "time_s": 1.88,
+          "finding": "Visible blocks retain consistent identities without jumps or duplication."
+        },
+        {
+          "time_s": 2.95,
+          "finding": "No teleportation, reset, or identity change is visible."
+        }
+      ]
+    },
+    "temporal_continuity": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0.54,
+          "finding": "Robot and gripper positions progress smoothly from the initial sampled state."
+        },
+        {
+          "time_s": 1.61,
+          "finding": "Intermediate robot and object appearance remains coherent."
+        },
+        {
+          "time_s": 2.95,
+          "finding": "The final state follows the same continuous scene progression."
+        }
+      ]
+    },
+    "hallucinated_entities": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0,
+          "finding": "No extra robot parts, people, blocks, or unrelated objects are visible."
+        },
+        {
+          "time_s": 1.34,
+          "finding": "The generated scene contains only the expected robot, grippers, blocks, work surface, and enclosure."
+        },
+        {
+          "time_s": 2.95,
+          "finding": "No new entities appear in the final sampled frame."
+        }
+      ]
+    },
+    "visible_task_preservation": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0,
+          "finding": "The generated frame preserves the two-arm robot and block-manipulation setup."
+        },
+        {
+          "time_s": 1.88,
+          "finding": "The same broad manipulation event remains visible."
+        },
+        {
+          "time_s": 2.95,
+          "finding": "The final frame preserves the original task scene with the requested wall edit."
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "Assessment is based only on the supplied sampled RGB panels; unsampled frames and non-visual physical validity are not assessed."
+  ],
+  "confidence": null,
+  "benchmark_agreement": "5/9"
+}

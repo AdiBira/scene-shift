@@ -1,10 +1,10 @@
 export type HumanVerdict = 'plausible' | 'discard';
 export type ReviewStatus = HumanVerdict | 'pending';
 
-export type RecordedReview = {
+export type ReviewObservation = {
   source: string;
-  status: ReviewStatus;
   summary: string;
+  artifactUrl: string;
   qualification?: string;
 };
 
@@ -14,7 +14,7 @@ export type ReviewWorld = {
   url: string;
   poster?: string;
   status: ReviewStatus;
-  recordedReview: RecordedReview;
+  observation: ReviewObservation;
 };
 
 export const appearanceWorlds: ReviewWorld[] = [
@@ -24,11 +24,11 @@ export const appearanceWorlds: ReviewWorld[] = [
     url: '/media/showcase/orange-opaque-repair.mp4',
     poster: '/media/worlds/orange-poster.jpg',
     status: 'pending',
-    recordedReview: {
-      source: 'Human review status',
-      status: 'pending',
-      summary: 'Dense sampled-frame review found no shell dropout, but final full-playback sign-off is still required.',
-      qualification: 'The 12-second raw remains source-order-reset flagged and is a visual candidate only.',
+    observation: {
+      source: 'Final selection catalog',
+      summary: 'Promising, but still awaiting final full-playback review.',
+      artifactUrl: '/review-artifacts/selection-catalog.json',
+      qualification: 'The raw output has a detected source-order reset.',
     },
   },
   {
@@ -37,10 +37,10 @@ export const appearanceWorlds: ReviewWorld[] = [
     url: '/media/showcase/orange.mp4',
     poster: '/media/worlds/orange-poster.jpg',
     status: 'discard',
-    recordedReview: {
-      source: 'Recorded human review',
-      status: 'discard',
+    observation: {
+      source: 'Manual playback observation',
       summary: 'The extending right-arm shell becomes transparent during playback.',
+      artifactUrl: '/review-artifacts/manual-playback-observations.json',
     },
   },
   {
@@ -49,11 +49,10 @@ export const appearanceWorlds: ReviewWorld[] = [
     url: '/media/showcase/blue.mp4',
     poster: '/media/worlds/cobalt-blue-poster.jpg',
     status: 'discard',
-    recordedReview: {
-      source: 'Recorded human review',
-      status: 'discard',
+    observation: {
+      source: 'Manual playback observation',
       summary: 'The extending right-arm shell becomes transparent or disappears during playback.',
-      qualification: 'The earlier sparse VLM keep is retained as a false negative.',
+      artifactUrl: '/review-artifacts/manual-playback-observations.json',
     },
   },
   {
@@ -62,10 +61,10 @@ export const appearanceWorlds: ReviewWorld[] = [
     url: '/media/showcase/yellow.mp4',
     poster: '/media/worlds/signal-yellow-poster.jpg',
     status: 'discard',
-    recordedReview: {
-      source: 'Recorded human review',
-      status: 'discard',
-      summary: 'The shell recolor is incomplete and the extending right arm loses structural consistency.',
+    observation: {
+      source: 'Focused frame review',
+      summary: 'The recolor is incomplete on the right arm.',
+      artifactUrl: '/review-artifacts/signal-yellow.json',
     },
   },
   {
@@ -74,11 +73,10 @@ export const appearanceWorlds: ReviewWorld[] = [
     url: '/media/showcase/graphite.mp4',
     poster: '/media/worlds/graphite-black-poster.jpg',
     status: 'discard',
-    recordedReview: {
-      source: 'Recorded human review',
-      status: 'discard',
+    observation: {
+      source: 'Manual playback observation',
       summary: 'The extending right-arm shell becomes transparent or disappears during playback.',
-      qualification: 'The earlier sparse VLM keep is retained as a false negative.',
+      artifactUrl: '/review-artifacts/manual-playback-observations.json',
     },
   },
 ];
@@ -89,11 +87,11 @@ export const backgroundWorlds: ReviewWorld[] = [
     title: 'Blue safety-panel walls',
     url: '/media/showcase/walls-blue-panels-3s.mp4',
     status: 'plausible',
-    recordedReview: {
+    observation: {
       source: 'Recorded human review',
-      status: 'plausible',
       summary: 'The blue polycarbonate background is visually acceptable.',
-      qualification: 'This selected 3-second clip comes from a 12-second raw output with a detected source-order reset.',
+      artifactUrl: '/review-artifacts/blue-panels-human-review.json',
+      qualification: 'The source raw has a detected source-order reset and is not eligible as a training candidate.',
     },
   },
   {
@@ -101,11 +99,11 @@ export const backgroundWorlds: ReviewWorld[] = [
     title: 'Dark safety-mesh walls',
     url: '/media/showcase/walls-safety-mesh-3s.mp4',
     status: 'pending',
-    recordedReview: {
-      source: 'Review status',
-      status: 'pending',
-      summary: 'The requested wall change is visible, but no completed human or VLM verdict is attached yet.',
-      qualification: 'Shown as an unreviewed visual candidate, not an accepted result.',
+    observation: {
+      source: 'Final selection catalog',
+      summary: 'Review required.',
+      artifactUrl: '/review-artifacts/selection-catalog.json',
+      qualification: 'The source raw has a detected source-order reset.',
     },
   },
   {
@@ -113,11 +111,10 @@ export const backgroundWorlds: ReviewWorld[] = [
     title: 'Light-gray lab walls',
     url: '/media/showcase/clean-lab-b.mp4',
     status: 'discard',
-    recordedReview: {
-      source: 'Recorded human review',
-      status: 'discard',
-      summary: 'The human reviewer found block drift and table artifacts.',
-      qualification: 'The precomputed VLM marked it plausible, creating a model-human disagreement.',
+    observation: {
+      source: 'Manual playback observation',
+      summary: 'Block drift and table artifacts are visible during playback.',
+      artifactUrl: '/review-artifacts/manual-playback-observations.json',
     },
   },
 ];
@@ -128,11 +125,11 @@ export const tableWorlds: ReviewWorld[] = [
     title: 'Brushed-steel table',
     url: '/media/showcase/table-brushed-steel-3s.mp4',
     status: 'plausible',
-    recordedReview: {
+    observation: {
       source: 'Recorded human review',
-      status: 'plausible',
-      summary: 'The table is visually acceptable, though similar to an existing table variant.',
-      qualification: 'This is a visual keep only.',
+      summary: 'The table is visually acceptable but similar to an existing table variant.',
+      artifactUrl: '/review-artifacts/brushed-steel-human-review.json',
+      qualification: 'The stored review marks it ineligible as a training candidate.',
     },
   },
   {
@@ -140,11 +137,10 @@ export const tableWorlds: ReviewWorld[] = [
     title: 'Navy-blue table',
     url: '/media/showcase/navy-esd-table-b.mp4',
     status: 'discard',
-    recordedReview: {
-      source: 'Recorded human review',
-      status: 'discard',
-      summary: 'The human reviewer found motion and object-state drift.',
-      qualification: 'The precomputed VLM marked it plausible, creating a model-human disagreement.',
+    observation: {
+      source: 'Manual playback observation',
+      summary: 'Motion and object-state drift are visible during playback.',
+      artifactUrl: '/review-artifacts/manual-playback-observations.json',
     },
   },
   {
@@ -152,10 +148,10 @@ export const tableWorlds: ReviewWorld[] = [
     title: 'Walnut table',
     url: '/media/showcase/table-walnut-failure-3s.mp4',
     status: 'discard',
-    recordedReview: {
-      source: 'Recorded Codex VLM review',
-      status: 'discard',
-      summary: 'The walnut transformation is visible, but the output multiplies wooden blocks and changes task state.',
+    observation: {
+      source: 'Catalog status',
+      summary: 'Discarded after visual review.',
+      artifactUrl: '/review-artifacts/walnut-review.json',
     },
   },
 ];

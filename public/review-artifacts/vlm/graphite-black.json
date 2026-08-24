@@ -1,0 +1,262 @@
+{
+  "schema_version": 2,
+  "review_id": "graphite-black",
+  "model": "gpt-5.6-luna",
+  "created_at": "2026-08-23T23:04:03.365435+00:00",
+  "requested_variation": "Change both robot-arm shells to graphite black.",
+  "source": {
+    "path": "prototype/public/media/showcase/original.mp4",
+    "sha256": "626462ab975c77d3aad818ac47aa4562372539454ce95c6f726a1ae8ab38c5aa"
+  },
+  "candidate": {
+    "path": "prototype/public/media/showcase/graphite.mp4",
+    "sha256": "379990db71d6c044a07a120347693a70be665c9519b7779ec8d327a8842d1a9a"
+  },
+  "sample_times_s": [
+    0.0,
+    0.2543,
+    0.5085,
+    0.7628,
+    1.017,
+    1.2713,
+    1.5255,
+    1.7798,
+    2.034,
+    2.2883,
+    2.5426,
+    2.7968,
+    3.0511,
+    3.3053,
+    3.5596,
+    3.8138,
+    4.0681,
+    4.3223,
+    4.5766,
+    4.8309,
+    5.0851,
+    5.3394,
+    5.5936,
+    5.8479,
+    6.1021,
+    6.3564,
+    6.6106,
+    6.8649,
+    7.1191,
+    7.3734,
+    7.6277,
+    7.8819,
+    8.1362,
+    8.3904,
+    8.6447,
+    8.8989,
+    9.1532,
+    9.4074,
+    9.6617,
+    9.916,
+    10.1702,
+    10.4245,
+    10.6787,
+    10.933,
+    11.1872,
+    11.4415,
+    11.6957,
+    11.95
+  ],
+  "sheet_hashes": [
+    "db3532dcbe6908be9e9f315912912de72a5bd18136982c633e13e2d067bb4be9",
+    "7f1cf959bcf3740bf18a2e628c5258959f547b2b1926a1dea1cd2f3640e5e9e1",
+    "f9da3d97740d26bba960036058ea413619e779222e1b8fdd2a4536c85fa94a83",
+    "b397eab718eed043e4fa9f6ab965fd20918feee3300e673aa19fb2a749e7b47b",
+    "370ae561f4cdf3bc2b7b0fad134eb6ae29ed44c284ac8bacca8c2ca4a85d64b9",
+    "5d554b40a211e722644c97ddd0595a6edbf6f78a4b5c3eefc2ef17628d921e5c",
+    "0b1a83990c3e26c76de8574a954dbab07e83d58b16650c2c4256c9ca007c7e23",
+    "84c26678f06fd422d6a45e48eacaa47923d41ad492f12fa94b3df1695d32d0fb",
+    "3172e038e0486314c7bafdfebdba56ecec2481f239fa1b47d34de203d151a3a9",
+    "d7c18b59940affd751b00a1cfe8efc77fe25f7322ee32664e01294a4b77ab4c3",
+    "03d77549cd563e45a14924848e778e1a16bb458d179e1ee6fea005c93f066fd3",
+    "30680463cc3f2d96217c99e57d7217338e589a025bd07ecfad749ca950a67470"
+  ],
+  "prompt": "You are a strict visual reviewer of a generated robot-manipulation video against its real source.\n\nThe attached images contain source and generated frames paired at identical timestamps. They are grouped into FULL FRAME, ROBOT + GRIPPERS, and BLOCKS + WORK SURFACE views. Read every panel in every view before assessing each dimension.\n\nRequested variation:\nChange both robot-arm shells to graphite black.\n\nSuccess on the requested edit is necessary but not sufficient. Assess all nine dimensions independently:\n1. requested_variation: the requested visual change is visible and temporally consistent without unrelated scene changes.\n2. arm_opacity_geometry: both robot arms stay opaque, solid, correctly connected, and geometrically coherent.\n3. gripper_integrity: both end effectors remain present, rigid, recognizable, and attached to their arms.\n4. block_realism_count: blocks remain solid and distinct, without melting, multiplication, disappearance, or implausible shape changes.\n5. gripper_block_interaction: visible block motion remains spatially associated with a gripper; fail if a block visibly moves independently, passes through a gripper, or changes attachment implausibly.\n6. object_continuity: blocks do not jump, teleport, drift, duplicate, reset, or change identity between sampled moments.\n7. temporal_continuity: robot, object, and scene motion progress without visible discontinuities or resets.\n8. hallucinated_entities: no new blocks, robot parts, people, or unrelated objects appear.\n9. visible_task_preservation: the generated sequence continues to show the same broad manipulation event as the source.\n\nFor every dimension return pass, fail, or uncertain with timestamped visible evidence. Mark fail when any sampled frame visibly contains a critical defect, even if most of the video looks good. Mark uncertain only when the supplied views do not visibly resolve the question. Do not infer a defect merely because frames are sampled rather than continuous.\n\nUse only visible RGB evidence. Do not infer physics correctness, contact validity, telemetry alignment, executable actions, or training readiness.\n\nReturn one factual summary, the nine dimension assessments, and limitations. The application will deterministically map any fail to DISCARD, otherwise any uncertain to UNCERTAIN, otherwise PLAUSIBLE.\n\nDo not provide a confidence score. Do not use tools or inspect files. Review only the attached images and return the requested JSON.",
+  "prompt_sha256": "8d6a7d4235f782bc6e530fdfbcbf50419ec87591543ed16bbd8cb6b647aba0d7",
+  "verdict": "uncertain",
+  "summary": "Both robot-arm shells are visibly graphite black across the sampled generated frames. The scene, robots, grippers, blocks, and broad manipulation event remain preserved. Exact gripper-block contact is not fully resolved in the supplied views.",
+  "observations": [
+    {
+      "time_s": 1.02,
+      "category": "gripper_block_interaction",
+      "finding": "A gripper is near the colored blocks, but the small-scale view does not clearly resolve contact or attachment."
+    },
+    {
+      "time_s": 4.58,
+      "category": "gripper_block_interaction",
+      "finding": "The moving gripper overlaps the work area, while exact block contact is partially occluded."
+    },
+    {
+      "time_s": 9.66,
+      "category": "gripper_block_interaction",
+      "finding": "The gripper and blocks are visible, but the supplied samples do not conclusively show whether contact is physically consistent."
+    }
+  ],
+  "dimensions": {
+    "requested_variation": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0,
+          "finding": "Both generated robot arms appear dark graphite black while the floral backdrop and work surface remain unchanged."
+        },
+        {
+          "time_s": 5.09,
+          "finding": "Both arm shells remain black in the generated frame."
+        },
+        {
+          "time_s": 11.95,
+          "finding": "The requested black-shell appearance persists through the final sampled frame."
+        }
+      ]
+    },
+    "arm_opacity_geometry": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0,
+          "finding": "Both arms are opaque, solid, and visibly connected to their bases and end effectors."
+        },
+        {
+          "time_s": 4.07,
+          "finding": "The extended black arms remain continuous and geometrically coherent."
+        },
+        {
+          "time_s": 9.92,
+          "finding": "Both arms remain solid and articulated without visible holes or broken connections."
+        }
+      ]
+    },
+    "gripper_integrity": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 1.02,
+          "finding": "Both end effectors are present and recognizable at the arm tips."
+        },
+        {
+          "time_s": 5.85,
+          "finding": "The grippers remain attached and rigid-looking during the central motion."
+        },
+        {
+          "time_s": 11.7,
+          "finding": "Both grippers remain visible and attached near the end of the sequence."
+        }
+      ]
+    },
+    "block_realism_count": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0,
+          "finding": "The colored blocks are distinct and solid on the work surface."
+        },
+        {
+          "time_s": 4.58,
+          "finding": "Visible blocks remain separate without obvious melting or multiplication."
+        },
+        {
+          "time_s": 9.66,
+          "finding": "The sampled blocks remain recognizable and distinct."
+        }
+      ]
+    },
+    "gripper_block_interaction": {
+      "status": "uncertain",
+      "evidence": [
+        {
+          "time_s": 1.02,
+          "finding": "A gripper is near the colored blocks, but the small-scale view does not clearly resolve contact or attachment."
+        },
+        {
+          "time_s": 4.58,
+          "finding": "The moving gripper overlaps the work area, while exact block contact is partially occluded."
+        },
+        {
+          "time_s": 9.66,
+          "finding": "The gripper and blocks are visible, but the supplied samples do not conclusively show whether contact is physically consistent."
+        }
+      ]
+    },
+    "object_continuity": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0,
+          "finding": "The initial colored blocks are visible in stable tabletop positions."
+        },
+        {
+          "time_s": 5.85,
+          "finding": "No sampled frame visibly shows block duplication, teleportation, or an identity reset."
+        },
+        {
+          "time_s": 11.95,
+          "finding": "The visible blocks remain consistent with the earlier sequence."
+        }
+      ]
+    },
+    "temporal_continuity": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 2.8,
+          "finding": "Robot motion progresses without a visible reset in the sampled sequence."
+        },
+        {
+          "time_s": 6.61,
+          "finding": "Arm and gripper poses continue coherently across the intermediate frames."
+        },
+        {
+          "time_s": 11.95,
+          "finding": "The final poses follow the ongoing manipulation sequence without an obvious discontinuity."
+        }
+      ]
+    },
+    "hallucinated_entities": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 4.07,
+          "finding": "No people, extra blocks, or unrelated objects appear in the generated frame."
+        },
+        {
+          "time_s": 8.14,
+          "finding": "Only the two robot arms, grippers, work surface, and existing blocks are visible."
+        },
+        {
+          "time_s": 11.95,
+          "finding": "No new robot parts or unrelated entities are visible."
+        }
+      ]
+    },
+    "visible_task_preservation": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0,
+          "finding": "The generated sequence preserves the same overhead two-arm tabletop manipulation setup as the source."
+        },
+        {
+          "time_s": 5.09,
+          "finding": "Both robots continue operating over the same block-covered work surface."
+        },
+        {
+          "time_s": 11.95,
+          "finding": "The final generated frame remains within the same broad manipulation event."
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "The supplied frames are sparsely sampled and do not establish continuous-frame behavior.",
+    "Small block-gripper contacts are partially occluded or too low-resolution to verify definitively.",
+    "This review uses only visible RGB evidence and does not assess physics, telemetry, or executable action validity."
+  ],
+  "confidence": null,
+  "benchmark_agreement": "5/9"
+}

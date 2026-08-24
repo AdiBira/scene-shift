@@ -1,0 +1,250 @@
+{
+  "schema_version": 2,
+  "review_id": "navy-esd-table-b",
+  "model": "gpt-5.6-luna",
+  "created_at": "2026-08-23T23:10:21.598455+00:00",
+  "requested_variation": "Change the table surface to navy-blue ESD material.",
+  "source": {
+    "path": "prototype/public/media/showcase/original.mp4",
+    "sha256": "626462ab975c77d3aad818ac47aa4562372539454ce95c6f726a1ae8ab38c5aa"
+  },
+  "candidate": {
+    "path": "prototype/public/media/showcase/navy-esd-table-b.mp4",
+    "sha256": "26de781caadd3ea902d7649eae77fa7e83118cccbf31c6eab1f1fe1a20e90144"
+  },
+  "sample_times_s": [
+    0.0,
+    0.2543,
+    0.5085,
+    0.7628,
+    1.017,
+    1.2713,
+    1.5255,
+    1.7798,
+    2.034,
+    2.2883,
+    2.5426,
+    2.7968,
+    3.0511,
+    3.3053,
+    3.5596,
+    3.8138,
+    4.0681,
+    4.3223,
+    4.5766,
+    4.8309,
+    5.0851,
+    5.3394,
+    5.5936,
+    5.8479,
+    6.1021,
+    6.3564,
+    6.6106,
+    6.8649,
+    7.1191,
+    7.3734,
+    7.6277,
+    7.8819,
+    8.1362,
+    8.3904,
+    8.6447,
+    8.8989,
+    9.1532,
+    9.4074,
+    9.6617,
+    9.916,
+    10.1702,
+    10.4245,
+    10.6787,
+    10.933,
+    11.1872,
+    11.4415,
+    11.6957,
+    11.95
+  ],
+  "sheet_hashes": [
+    "754330dcde18143c1c3f21320122258ceab25f80675b1d0bf118f19bbdbcac76",
+    "29d908ab3dd08c0f428558e29624836d1491d9f8c3cb40286089f0636fce26dc",
+    "864f0c78e7cb045ab1ffa85f7c7c14654752f7b7c56395bad74cc2d553fc7bac",
+    "4d511608a90c95bf9f234cd29c6701a7c987dfcfaca69780662c4c3cf663f51c",
+    "b69dba3a2a5a74f634d4feacc733774e18d39cb533ad4269b23017f74770342f",
+    "624e958d1d6b889cba35902af61a1180649f3a4c1d51d891e0aaddce799b5792",
+    "4f9fb742a3c632478e7ecc525930bf02f754784e378dbe0e2b2d63703f6a62e2",
+    "eec37aeeb737e1ed312dec3dc058cf509d1972da6c8ddd1530d5750fcac63807",
+    "066667f6be767d8648ab94189db28a9764ee79e679b58ca3381cdea8574320b2",
+    "ffa5545f4702b48a3c8d347122c26ed7319e76ae6e68b67bcc1d1b88d581511c",
+    "ec2ee675feba06b2a0e4ad4d88c6bccfaf0b0015cce93a480454e94072c399a7",
+    "7f0e57bdf2565a576f76b01011830a7937d2620e105b5a6993d4161b978dbe54"
+  ],
+  "prompt": "You are a strict visual reviewer of a generated robot-manipulation video against its real source.\n\nThe attached images contain source and generated frames paired at identical timestamps. They are grouped into FULL FRAME, ROBOT + GRIPPERS, and BLOCKS + WORK SURFACE views. Read every panel in every view before assessing each dimension.\n\nRequested variation:\nChange the table surface to navy-blue ESD material.\n\nSuccess on the requested edit is necessary but not sufficient. Assess all nine dimensions independently:\n1. requested_variation: the requested visual change is visible and temporally consistent without unrelated scene changes.\n2. arm_opacity_geometry: both robot arms stay opaque, solid, correctly connected, and geometrically coherent.\n3. gripper_integrity: both end effectors remain present, rigid, recognizable, and attached to their arms.\n4. block_realism_count: blocks remain solid and distinct, without melting, multiplication, disappearance, or implausible shape changes.\n5. gripper_block_interaction: visible block motion remains spatially associated with a gripper; fail if a block visibly moves independently, passes through a gripper, or changes attachment implausibly.\n6. object_continuity: blocks do not jump, teleport, drift, duplicate, reset, or change identity between sampled moments.\n7. temporal_continuity: robot, object, and scene motion progress without visible discontinuities or resets.\n8. hallucinated_entities: no new blocks, robot parts, people, or unrelated objects appear.\n9. visible_task_preservation: the generated sequence continues to show the same broad manipulation event as the source.\n\nFor every dimension return pass, fail, or uncertain with timestamped visible evidence. Mark fail when any sampled frame visibly contains a critical defect, even if most of the video looks good. Mark uncertain only when the supplied views do not visibly resolve the question. Do not infer a defect merely because frames are sampled rather than continuous.\n\nUse only visible RGB evidence. Do not infer physics correctness, contact validity, telemetry alignment, executable actions, or training readiness.\n\nReturn one factual summary, the nine dimension assessments, and limitations. The application will deterministically map any fail to DISCARD, otherwise any uncertain to UNCERTAIN, otherwise PLAUSIBLE.\n\nDo not provide a confidence score. Do not use tools or inspect files. Review only the attached images and return the requested JSON.",
+  "prompt_sha256": "6eee4f2d3cbfde8d3c193c677a43728b7e62b2b747545ba22bc34918280c4647",
+  "verdict": "plausible",
+  "summary": "The generated sequence consistently changes the work surface from white to navy blue while preserving the robot setup, blocks, grippers, and broad manipulation event. No critical visible defects are present in the sampled RGB frames.",
+  "observations": [
+    {
+      "time_s": 0,
+      "category": "overall",
+      "finding": "The generated sequence consistently changes the work surface from white to navy blue while preserving the robot setup, blocks, grippers, and broad manipulation event. No critical visible defects are present in the sampled RGB frames."
+    }
+  ],
+  "dimensions": {
+    "requested_variation": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0.0,
+          "finding": "Generated frame shows a navy-blue work surface replacing the white source surface."
+        },
+        {
+          "time_s": 5.09,
+          "finding": "Navy surface remains consistent while the robot and blocks move."
+        },
+        {
+          "time_s": 11.95,
+          "finding": "Navy surface is still present without unrelated scene changes."
+        }
+      ]
+    },
+    "arm_opacity_geometry": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0.0,
+          "finding": "Both generated robot arms are opaque, solid, connected, and geometrically coherent."
+        },
+        {
+          "time_s": 6.1,
+          "finding": "Both arms remain intact during repositioning."
+        },
+        {
+          "time_s": 11.95,
+          "finding": "Both arms remain visibly connected and solid at the end of the sampled sequence."
+        }
+      ]
+    },
+    "gripper_integrity": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0.0,
+          "finding": "Both recognizable grippers are present and attached to their arms."
+        },
+        {
+          "time_s": 5.85,
+          "finding": "Both grippers remain rigid and attached during manipulation."
+        },
+        {
+          "time_s": 11.95,
+          "finding": "Both grippers remain visible and structurally intact."
+        }
+      ]
+    },
+    "block_realism_count": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0.0,
+          "finding": "The visible colored blocks are distinct and solid."
+        },
+        {
+          "time_s": 5.09,
+          "finding": "Blocks remain distinct without visible melting, multiplication, or disappearance."
+        },
+        {
+          "time_s": 11.95,
+          "finding": "The sampled end frame retains the expected distinct blocks."
+        }
+      ]
+    },
+    "gripper_block_interaction": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 3.05,
+          "finding": "The right gripper moves toward the block area with spatially associated block motion."
+        },
+        {
+          "time_s": 5.85,
+          "finding": "Block and gripper positions remain locally associated with no visible pass-through or implausible attachment."
+        },
+        {
+          "time_s": 9.66,
+          "finding": "Repositioning remains spatially consistent with the manipulation event."
+        }
+      ]
+    },
+    "object_continuity": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0.0,
+          "finding": "Initial block arrangement is clearly visible."
+        },
+        {
+          "time_s": 6.61,
+          "finding": "The same visible blocks persist without duplication, teleportation, or identity changes."
+        },
+        {
+          "time_s": 11.95,
+          "finding": "Blocks remain continuous through the final sampled frame."
+        }
+      ]
+    },
+    "temporal_continuity": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 2.8,
+          "finding": "Robot motion progresses smoothly into the manipulation."
+        },
+        {
+          "time_s": 6.86,
+          "finding": "Arm and gripper positions change progressively without a visible reset."
+        },
+        {
+          "time_s": 11.7,
+          "finding": "The sequence continues coherently toward the final configuration."
+        }
+      ]
+    },
+    "hallucinated_entities": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0.0,
+          "finding": "No extra robot parts, people, or unrelated objects are visible."
+        },
+        {
+          "time_s": 6.1,
+          "finding": "The scene contains only the expected robot components, blocks, work surface, and background."
+        },
+        {
+          "time_s": 11.95,
+          "finding": "No new entities appear in the final sampled frame."
+        }
+      ]
+    },
+    "visible_task_preservation": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0.0,
+          "finding": "The generated sequence preserves the same two-arm tabletop manipulation setup as the source."
+        },
+        {
+          "time_s": 5.09,
+          "finding": "Both robots continue manipulating the same block arrangement."
+        },
+        {
+          "time_s": 11.95,
+          "finding": "The broad manipulation event remains visibly preserved through the sequence."
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "Assessment is limited to the supplied sampled RGB panels and does not establish behavior between sampled timestamps."
+  ],
+  "confidence": null,
+  "benchmark_agreement": "5/9"
+}

@@ -1,0 +1,174 @@
+{
+  "schema_version": 2,
+  "review_id": "brushed-steel-table",
+  "model": "gpt-5.6-luna",
+  "created_at": "2026-08-23T23:08:58.230348+00:00",
+  "requested_variation": "Change the table surface to brushed steel.",
+  "source": {
+    "path": "prototype/public/media/showcase/original.mp4",
+    "sha256": "626462ab975c77d3aad818ac47aa4562372539454ce95c6f726a1ae8ab38c5aa"
+  },
+  "candidate": {
+    "path": "prototype/public/media/showcase/table-brushed-steel-3s.mp4",
+    "sha256": "71a1162bcbdf5413d9162587ce68456c730995fc57d9de0858fe474aac068855"
+  },
+  "sample_times_s": [
+    0.0,
+    0.2682,
+    0.5364,
+    0.8045,
+    1.0727,
+    1.3409,
+    1.6091,
+    1.8773,
+    2.1455,
+    2.4136,
+    2.6818,
+    2.95
+  ],
+  "sheet_hashes": [
+    "38a5d6864fd3a84ef1b9a663b8ddc6177bc8138f9ae4f75eb1c5ea708caab1f4",
+    "0b9888159c192772a54981e03e374711f9edb1f605121003605421155e81a61a",
+    "912a27dc2fbcb2fb9010fb8e9d67f1242cf6f3143faeb0f0c76941ba6c9d6ace"
+  ],
+  "prompt": "You are a strict visual reviewer of a generated robot-manipulation video against its real source.\n\nThe attached images contain source and generated frames paired at identical timestamps. They are grouped into FULL FRAME, ROBOT + GRIPPERS, and BLOCKS + WORK SURFACE views. Read every panel in every view before assessing each dimension.\n\nRequested variation:\nChange the table surface to brushed steel.\n\nSuccess on the requested edit is necessary but not sufficient. Assess all nine dimensions independently:\n1. requested_variation: the requested visual change is visible and temporally consistent without unrelated scene changes.\n2. arm_opacity_geometry: both robot arms stay opaque, solid, correctly connected, and geometrically coherent.\n3. gripper_integrity: both end effectors remain present, rigid, recognizable, and attached to their arms.\n4. block_realism_count: blocks remain solid and distinct, without melting, multiplication, disappearance, or implausible shape changes.\n5. gripper_block_interaction: visible block motion remains spatially associated with a gripper; fail if a block visibly moves independently, passes through a gripper, or changes attachment implausibly.\n6. object_continuity: blocks do not jump, teleport, drift, duplicate, reset, or change identity between sampled moments.\n7. temporal_continuity: robot, object, and scene motion progress without visible discontinuities or resets.\n8. hallucinated_entities: no new blocks, robot parts, people, or unrelated objects appear.\n9. visible_task_preservation: the generated sequence continues to show the same broad manipulation event as the source.\n\nFor every dimension return pass, fail, or uncertain with timestamped visible evidence. Mark fail when any sampled frame visibly contains a critical defect, even if most of the video looks good. Mark uncertain only when the supplied views do not visibly resolve the question. Do not infer a defect merely because frames are sampled rather than continuous.\n\nUse only visible RGB evidence. Do not infer physics correctness, contact validity, telemetry alignment, executable actions, or training readiness.\n\nReturn one factual summary, the nine dimension assessments, and limitations. The application will deterministically map any fail to DISCARD, otherwise any uncertain to UNCERTAIN, otherwise PLAUSIBLE.\n\nDo not provide a confidence score. Do not use tools or inspect files. Review only the attached images and return the requested JSON.",
+  "prompt_sha256": "aaa4caa14a959c7a25e95edc8e534f003bb0d558a6c825cd6b6e50384efbc5e2",
+  "verdict": "discard",
+  "summary": "The robot, grippers, blocks, and manipulation scene remain visually coherent, but the generated tabletop does not show a clearly visible brushed-steel material change.",
+  "observations": [
+    {
+      "time_s": 0,
+      "category": "requested_variation",
+      "finding": "Generated tabletop remains visually similar to the pale, stained source surface; no distinct brushed-steel grain or metallic finish is visibly resolved."
+    },
+    {
+      "time_s": 2.95,
+      "category": "requested_variation",
+      "finding": "The tabletop still appears pale and mottled rather than clearly brushed steel."
+    }
+  ],
+  "dimensions": {
+    "requested_variation": {
+      "status": "fail",
+      "evidence": [
+        {
+          "time_s": 0,
+          "finding": "Generated tabletop remains visually similar to the pale, stained source surface; no distinct brushed-steel grain or metallic finish is visibly resolved."
+        },
+        {
+          "time_s": 2.95,
+          "finding": "The tabletop still appears pale and mottled rather than clearly brushed steel."
+        }
+      ]
+    },
+    "arm_opacity_geometry": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0.8,
+          "finding": "Both arms are opaque, solid, connected, and geometrically coherent."
+        },
+        {
+          "time_s": 2.95,
+          "finding": "Both arms remain connected and solid during the later movement."
+        }
+      ]
+    },
+    "gripper_integrity": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 1.34,
+          "finding": "Both end effectors remain present, recognizable, rigid, and attached."
+        },
+        {
+          "time_s": 2.68,
+          "finding": "The moving right gripper remains visibly attached and structurally intact."
+        }
+      ]
+    },
+    "block_realism_count": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0,
+          "finding": "The visible colored blocks are distinct and solid without obvious multiplication or melting."
+        },
+        {
+          "time_s": 2.95,
+          "finding": "Blocks remain visually distinct with no obvious disappearance or implausible shape change."
+        }
+      ]
+    },
+    "gripper_block_interaction": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 1.61,
+          "finding": "The right gripper moves into spatial proximity with the purple block."
+        },
+        {
+          "time_s": 2.41,
+          "finding": "The block and right gripper remain spatially associated without visible passing-through or implausible attachment change."
+        }
+      ]
+    },
+    "object_continuity": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 1.07,
+          "finding": "The same colored blocks remain present without visible teleportation or duplication."
+        },
+        {
+          "time_s": 2.68,
+          "finding": "Block identities and locations progress consistently with the manipulation sequence."
+        }
+      ]
+    },
+    "temporal_continuity": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0.54,
+          "finding": "Arm motion progresses from the initial configuration without a visible reset."
+        },
+        {
+          "time_s": 2.95,
+          "finding": "Later arm and scene states continue the same movement progression."
+        }
+      ]
+    },
+    "hallucinated_entities": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0,
+          "finding": "No additional blocks, robot parts, people, or unrelated objects are visible."
+        },
+        {
+          "time_s": 2.95,
+          "finding": "No new entities are visibly introduced."
+        }
+      ]
+    },
+    "visible_task_preservation": {
+      "status": "pass",
+      "evidence": [
+        {
+          "time_s": 0.8,
+          "finding": "The generated sequence shows the same two-arm tabletop manipulation setup as the source."
+        },
+        {
+          "time_s": 2.95,
+          "finding": "The sequence continues the same broad robot-and-block manipulation event."
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "Assessment is limited to the supplied sampled RGB panels and does not establish behavior between timestamps."
+  ],
+  "confidence": null,
+  "benchmark_agreement": "5/9"
+}

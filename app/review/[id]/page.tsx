@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { type HumanVerdict, reviewWorlds } from '../../review-data';
-import { vlmReviews } from '../../vlm-reviews';
+import { vlmResults } from '../../vlm-results';
 
 type HumanReview = {
   verdict: HumanVerdict | null;
@@ -26,33 +26,32 @@ export default function ReviewPage() {
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [human, setHuman] = useState<HumanReview>({ verdict: null, comment: '' });
-  const [loaded, setLoaded] = useState(false);
+  const [submitted, setSubmitted] = useState<HumanReview>({ verdict: null, comment: '' });
   const storageKey = `scene-shift-human-review-${id}`;
-  const vlm = vlmReviews[id];
+  const vlm = vlmResults[id];
 
   useEffect(() => {
     const restore = window.setTimeout(() => {
       const saved = localStorage.getItem(storageKey);
-      if (saved) setHuman(JSON.parse(saved) as HumanReview);
-      setLoaded(true);
+      if (saved) {
+        const review = JSON.parse(saved) as HumanReview;
+        setHuman(review);
+        setSubmitted(review);
+      }
     });
     return () => window.clearTimeout(restore);
   }, [storageKey]);
 
-  useEffect(() => {
-    if (loaded) localStorage.setItem(storageKey, JSON.stringify(human));
-  }, [human, loaded, storageKey]);
-
   if (!world) {
     return (
       <main className="review-page">
-        <Link className="back-button" href="/">Back to outputs</Link>
+        <Link className="back-button" href="/">Back</Link>
         <h1>Output not found.</h1>
       </main>
     );
   }
 
-  const effectiveStatus = human.verdict ?? world.status;
+  const effectiveStatus = submitted.verdict ?? world.status;
   const effectiveLabel = effectiveStatus === 'plausible' ? 'ACCEPTED' : effectiveStatus === 'discard' ? 'DISCARD' : 'PENDING';
 
   function updateDuration() {
@@ -112,7 +111,7 @@ export default function ReviewPage() {
       </header>
 
       <section className="review-page">
-        <Link className="back-button" href="/">Back to outputs</Link>
+        <Link className="back-button" href="/">Back</Link>
         <header className="review-page-heading">
           <div><p className="eyebrow">SOURCE COMPARISON</p><h1>{world.title}</h1></div>
           <strong className={`review-page-status recorded-${effectiveStatus}`}>{effectiveLabel}</strong>
@@ -148,7 +147,19 @@ export default function ReviewPage() {
         </div>
 
         <div className="compare-controls">
-          <button onClick={togglePlayback} type="button">{playing ? 'PAUSE BOTH' : 'PLAY BOTH'}</button>
+          <button
+            aria-label={playing ? 'Pause both videos' : 'Play both videos'}
+            className="playback-button"
+            onClick={togglePlayback}
+            title={playing ? 'Pause' : 'Play'}
+            type="button"
+          >
+            {playing ? (
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 5h4v14H7zm6 0h4v14h-4z" /></svg>
+            ) : (
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7z" /></svg>
+            )}
+          </button>
           <input
             aria-label="Seek both videos"
             max={duration}
@@ -162,53 +173,51 @@ export default function ReviewPage() {
         </div>
 
         <section className="review-interpretation">
-          <article className={`recorded-review recorded-${effectiveStatus}`}>
-            <header><span>{human.verdict ? 'FINAL HUMAN VERDICT' : world.recordedReview.source}</span><strong>{effectiveLabel}</strong></header>
-            {!human.verdict && <p>{world.recordedReview.summary}</p>}
-            {!human.verdict && world.recordedReview.qualification && <small>{world.recordedReview.qualification}</small>}
+          <article className={`automated-review automated-${vlm.verdict === 'uncertain' ? 'pending' : vlm.verdict}`}>
+            <header className="review-evidence-header">
+              <span>VLM REVIEW</span>
+              <strong>{vlm.verdict.toUpperCase()}</strong>
+            </header>
+            <p>{vlm.summary}</p>
           </article>
 
-          {vlm && (
-            <article className={`vlm-review vlm-${vlm.verdict}`}>
-              <header className="review-evidence-header">
-                <span>PRECOMPUTED VLM</span>
-                <strong>{vlm.verdict === 'plausible' ? 'PLAUSIBLE' : 'DISCARD'}</strong>
-                <small>{Math.round(vlm.confidence * 100)}% confidence</small>
-              </header>
-              <p>{vlm.summary}</p>
-            </article>
-          )}
-
           <article className="human-review review-decision-card">
-            <div><span>FINAL DECISION</span></div>
+            <div><span>YOUR REVIEW</span></div>
             <div className="human-verdicts" role="group" aria-label="Final human decision">
               <button
                 className={human.verdict === 'plausible' ? 'selected plausible' : ''}
-                onClick={() => setHuman({ ...human, verdict: 'plausible' })}
+                onClick={() => setHuman({ verdict: 'plausible' })}
                 type="button"
               >
                 Accept
               </button>
               <button
                 className={human.verdict === 'discard' ? 'selected discard' : ''}
-                onClick={() => setHuman({ ...human, verdict: 'discard' })}
+                onClick={() => setHuman({ verdict: 'discard' })}
                 type="button"
               >
                 Discard
               </button>
             </div>
             <textarea
-              aria-label="Review note"
+              aria-label="Review comment"
               onChange={(event) => setHuman({ ...human, comment: event.target.value })}
-              placeholder="Optional note"
+              placeholder="Add a comment"
               value={human.comment}
             />
+            <button
+              className="submit-review"
+              disabled={!human.verdict}
+              onClick={() => {
+                localStorage.setItem(storageKey, JSON.stringify(human));
+                setSubmitted(human);
+              }}
+              type="button"
+            >
+              SUBMIT REVIEW
+            </button>
           </article>
         </section>
-
-        <p className="review-boundary">
-          Visual judgment only. This does not certify physics, telemetry alignment, or training readiness.
-        </p>
       </section>
     </main>
   );

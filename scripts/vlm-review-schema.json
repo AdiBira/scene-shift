@@ -1,0 +1,64 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["summary", "dimensions", "limitations"],
+  "properties": {
+    "summary": {"type": "string"},
+    "dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requested_variation",
+        "arm_opacity_geometry",
+        "gripper_integrity",
+        "block_realism_count",
+        "gripper_block_interaction",
+        "object_continuity",
+        "temporal_continuity",
+        "hallucinated_entities",
+        "visible_task_preservation"
+      ],
+      "properties": {
+        "requested_variation": {"$ref": "#/$defs/check"},
+        "arm_opacity_geometry": {"$ref": "#/$defs/check"},
+        "gripper_integrity": {"$ref": "#/$defs/check"},
+        "block_realism_count": {"$ref": "#/$defs/check"},
+        "gripper_block_interaction": {"$ref": "#/$defs/check"},
+        "object_continuity": {"$ref": "#/$defs/check"},
+        "temporal_continuity": {"$ref": "#/$defs/check"},
+        "hallucinated_entities": {"$ref": "#/$defs/check"},
+        "visible_task_preservation": {"$ref": "#/$defs/check"}
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4,
+      "items": {"type": "string"}
+    }
+  },
+  "$defs": {
+    "check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "evidence"],
+      "properties": {
+        "status": {"enum": ["pass", "fail", "uncertain"]},
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 3,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["time_s", "finding"],
+            "properties": {
+              "time_s": {"type": "number", "minimum": 0},
+              "finding": {"type": "string"}
+            }
+          }
+        }
+      }
+    }
+  }
+}
