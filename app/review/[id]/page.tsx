@@ -186,14 +186,14 @@ export default function ReviewPage() {
             <div className="human-verdicts" role="group" aria-label="Final human decision">
               <button
                 className={human.verdict === 'plausible' ? 'selected plausible' : ''}
-                onClick={() => setHuman({ verdict: 'plausible' })}
+                onClick={() => setHuman({ ...human, verdict: 'plausible' })}
                 type="button"
               >
                 Accept
               </button>
               <button
                 className={human.verdict === 'discard' ? 'selected discard' : ''}
-                onClick={() => setHuman({ verdict: 'discard' })}
+                onClick={() => setHuman({ ...human, verdict: 'discard' })}
                 type="button"
               >
                 Discard
